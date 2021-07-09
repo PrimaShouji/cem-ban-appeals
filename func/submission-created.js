@@ -31,9 +31,9 @@ exports.handler = async function (event, context) {
         payload.token !== undefined) {
         
         const userInfo = decodeJwt(payload.token);
-        const BlockedUsers = JSON.parse(`[${process.env.BLOCKED_USERS}]`);
-        if (BlockedUsers.indexOf(userInfo.id) > -1)
-        {
+    
+        const blockedUsers = JSON.parse(`[${process.env.BLOCKED_USERS || ""}]`);
+        if (blockedUsers.indexOf(userInfo.id) > -1) {
             return {
                 statusCode: 303,
                 headers: {
@@ -41,6 +41,7 @@ exports.handler = async function (event, context) {
                 }
             };
         }
+    
         const message = {
             embed: {
                 title: "New appeal submitted!",
